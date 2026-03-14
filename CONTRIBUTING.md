@@ -2,6 +2,10 @@
 
 Thank you for your interest in contributing to ChatHub! This document provides guidelines and information for contributors.
 
+## 🎉 Project Status
+
+**ChatHub was released on March 14, 2026** as a modern, dark-themed AI chat application with multi-model support and rich content rendering.
+
 ## 🤝 How to Contribute
 
 ### Reporting Bugs
