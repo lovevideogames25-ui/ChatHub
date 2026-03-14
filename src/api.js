@@ -1,14 +1,31 @@
 async function sendMessage(prompt, model) {
   let url;
   
-  if (model === "GPT-OSS") {
-    url = "http://localhost:3001/api/gptoss";
-  } else if (model === "GEMMA-3") {
-    url = "http://localhost:3001/api/gemma3";
-  } else if (model === "LLAMA3.2") {
-    url = "http://localhost:3001/api/llama33";
+  // Check if we're in production (Vercel) or development
+  const isProduction = import.meta.env.PROD;
+  
+  if (isProduction) {
+    // Vercel serverless functions
+    if (model === "GPT-OSS") {
+      url = "/api/gptoss";
+    } else if (model === "GEMMA-3") {
+      url = "/api/gemma3";
+    } else if (model === "LLAMA3.2") {
+      url = "/api/llama33";
+    } else {
+      throw new Error("Model not supported");
+    }
   } else {
-    throw new Error("Model not supported");
+    // Local development - use backend server
+    if (model === "GPT-OSS") {
+      url = "http://localhost:3001/api/gptoss";
+    } else if (model === "GEMMA-3") {
+      url = "http://localhost:3001/api/gemma3";
+    } else if (model === "LLAMA3.2") {
+      url = "http://localhost:3001/api/llama33";
+    } else {
+      throw new Error("Model not supported");
+    }
   }
 
   const res = await fetch(url, {
