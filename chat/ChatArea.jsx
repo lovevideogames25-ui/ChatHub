@@ -5,15 +5,34 @@ import './ChatArea.css';
 
 const ChatArea = ({ messages, onSendMessage, selectedModel, isLoading }) => {
   const [inputValue, setInputValue] = useState('');
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleScroll = () => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 100;
+      setShowScrollButton(!isAtBottom);
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   const handleSend = () => {
     if (inputValue.trim()) {
@@ -39,7 +58,7 @@ const ChatArea = ({ messages, onSendMessage, selectedModel, isLoading }) => {
         </div>
       </div>
       
-      <div className="messages-container">
+      <div className="messages-container" ref={messagesContainerRef}>
         {messages.map((message, index) => (
           <MessageBubble 
             key={index} 
@@ -66,6 +85,14 @@ const ChatArea = ({ messages, onSendMessage, selectedModel, isLoading }) => {
         )}
         <div ref={messagesEndRef} />
       </div>
+      
+      <button 
+        className={`scroll-to-bottom ${showScrollButton ? 'visible' : ''}`}
+        onClick={scrollToBottom}
+        aria-label="Scroll to bottom"
+      >
+        ↓
+      </button>
       
       <InputBar
         value={inputValue}
