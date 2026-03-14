@@ -1,32 +1,38 @@
 async function sendMessage(prompt, model) {
-  let url;
+  let modelId;
   
-  // Always use serverless functions for Vercel deployment
   if (model === "GPT-OSS") {
-    url = "/api/gptoss";
+    modelId = "openai/gpt-4o-mini";
   } else if (model === "GEMMA-3") {
-    url = "/api/gemma3";
+    modelId = "google/gemma-3-27b-it:free";
   } else if (model === "LLAMA3.2") {
-    url = "/api/llama33";
+    modelId = "meta-llama/llama-3.2-3b-instruct:free";
   } else {
     throw new Error("Model not supported");
   }
 
-  const res = await fetch(url, {
+  // Direct OpenRouter API call using environment variable
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": `https://${import.meta.env.VITE_SITE_URL || 'chat-hub-ai.vercel.app'}`,
+      "X-Title": "ChatHub"
     },
-    body: JSON.stringify({ prompt })
+    body: JSON.stringify({
+      model: modelId,
+      messages: [{ role: "user", content: prompt }]
+    })
   });
 
-  const data = await res.json();
+  const data = await response.json();
   
   if (data.error) {
-    throw new Error(data.error);
+    throw new Error(data.error.message || "API request failed");
   }
   
-  return data.response;
+  return data.choices[0].message.content;
 }
 
 export default sendMessage;
