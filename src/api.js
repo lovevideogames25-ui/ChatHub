@@ -11,11 +11,18 @@ async function sendMessage(prompt, model) {
     throw new Error("Model not supported");
   }
 
+  // Get API key from environment variables
+  const apiKey = import.meta.env.VITE_OPENROUTER_API || import.meta.env.OPENROUTER_API;
+  
+  if (!apiKey) {
+    throw new Error("API key not found. Please add VITE_OPENROUTER_API to your environment variables.");
+  }
+
   // Direct OpenRouter API call using environment variable
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API}`,
+      "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       "HTTP-Referer": `https://${import.meta.env.VITE_SITE_URL || 'chat-hub-ai.vercel.app'}`,
       "X-Title": "ChatHub"
