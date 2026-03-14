@@ -13,7 +13,7 @@ const Sidebar = ({ selectedModel, setSelectedModel }) => {
     <div className="sidebar">
       <div className="sidebar-header">
         <div className="logo-container">
-          <img src="/favicon.png" alt="ChatHub Logo" className="logo" onError={(e) => {e.target.src = '/favicon.png'}} />
+          <span className="logo-emoji">🤖</span>
           <h2>ChatHub</h2>
         </div>
         <div className="model-indicator">
