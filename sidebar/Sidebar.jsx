@@ -12,7 +12,10 @@ const Sidebar = ({ selectedModel, setSelectedModel }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>ChatHub</h2>
+        <div className="logo-container">
+          <img src="/favicon.png" alt="ChatHub Logo" className="logo" />
+          <h2>ChatHub</h2>
+        </div>
         <div className="model-indicator">
           <span className="indicator-text">Model:</span>
           <span className="indicator-model">{selectedModel}</span>
