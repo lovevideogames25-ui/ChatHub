@@ -12,8 +12,8 @@ A modern, dark-themed AI chat application with multi-model support and rich cont
 
 ### 🤖 Multi-Model Support
 - **GPT-OSS** ✅ Working
-- **GEMMA-3** ✅ Working  
-- **LLAMA3.2** 🔴 Down
+- **GEMMA-3** 🔴 Down (API connectivity issues)
+- **LLAMA3.2** 🔴 Down (API connectivity issues)
 - **DEEPSEEK-V3** 🟡 Coming Soon
 
 ### 💬 Rich Content Support
@@ -108,9 +108,9 @@ ChatHub/
 ## 🔌 API Integration
 
 ### Backend Routes
-- `POST /api/gptoss` - GPT-OSS model
-- `POST /api/gemma3` - Gemma-3 model  
-- `POST /api/llama33` - LLaMA 3.2 model
+- `POST /api/gptoss` - GPT-OSS model (working)
+- `POST /api/gemma3` - Gemma-3 model (currently down)
+- `POST /api/llama33` - LLaMA 3.2 model (currently down)
 
 ### Frontend API Service
 The `src/api.js` file handles model routing:
@@ -145,6 +145,25 @@ Edit `src/index.css` to customize the color scheme:
 3. Add routing logic in `src/api.js`
 4. Update validation in `src/App.jsx`
 
+## � Current Status
+
+### Working Models
+- **GPT-OSS**: Fully functional with OpenRouter integration
+
+### Down Models (Next Update Priority)
+- **GEMMA-3**: Experiencing API connectivity issues
+- **LLAMA3.2**: Experiencing API connectivity issues
+
+### Coming Soon
+- **DEEPSEEK-V3**: Model integration in development
+
+### Known Issues
+- Rate limiting on some free model tiers
+- API connectivity issues with GEMMA-3 and LLaMA 3.2
+- Occasional CORS issues in development environment
+
+For the latest status and updates, see the [CHANGELOG.md](CHANGELOG.md).
+
 ## 🔐 Security
 
 - API keys stored in environment variables
@@ -154,7 +173,7 @@ Edit `src/index.css` to customize the color scheme:
 
 ## 📝 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 

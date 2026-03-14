@@ -341,7 +341,7 @@ If you need help:
 
 ## 📄 License
 
-By contributing to ChatHub, you agree that your contributions will be licensed under the same license as the project.
+By contributing to ChatHub, you agree that your contributions will be licensed under the same license as the project - Apache License 2.0.
 
 ---
 

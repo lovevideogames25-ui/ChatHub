@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Add DEEPSEEK-V3 model integration
+- Fix GEMMA-3 model connectivity issues
 - Fix LLaMA 3.2 model connectivity issues
+- Add DEEPSEEK-V3 model integration
 - Add user preferences and settings
 - Implement chat history persistence
 
@@ -19,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🎉 Initial release of ChatHub AI chat application
 - 🤖 Multi-model AI support with OpenRouter integration
   - GPT-OSS (openai/gpt-4o-mini) - Working ✅
-  - GEMMA-3 (google/gemma-3-27b-it:free) - Working ✅
+  - GEMMA-3 (google/gemma-3-27b-it:free) - Down 🔴
   - LLAMA3.2 (meta-llama/llama-3.2-3b-instruct:free) - Down 🔴
 - 🎨 Dark futuristic theme with gradient backgrounds
 - ✨ Smooth animations and hover effects
@@ -107,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Bug Reports
 
 ### Known Issues
+- GEMMA-3 model currently experiencing API connectivity issues
 - LLaMA 3.2 model currently experiencing API connectivity issues
 - Rate limiting on some free model tiers
 - Occasional CORS issues in development environment

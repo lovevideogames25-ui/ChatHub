@@ -3,7 +3,7 @@ import './Sidebar.css';
 
 const models = [
   { name: 'GPT-OSS', status: 'WORKING' },
-  { name: 'GEMMA-3', status: 'WORKING' },
+  { name: 'GEMMA-3', status: 'DOWN' },
   { name: 'LLAMA3.2', status: 'DOWN' },
   { name: 'DEEPSEEK-V3', status: 'COMING SOON' }
 ];
