@@ -1,0 +1,166 @@
+:root {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #111111;
+  --accent-primary: #00FFA3;
+  --accent-secondary: #00D4FF;
+  --text-primary: #EAEAEA;
+  --text-secondary: #B0B0B0;
+  --border-color: #2A2A2A;
+  --shadow-glow: 0 0 20px rgba(0, 255, 163, 0.3);
+  --shadow-glow-blue: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glow-effect {
+  box-shadow: var(--shadow-glow);
+  transition: all 0.3s ease;
+}
+
+.glow-effect:hover {
+  box-shadow: 0 0 30px rgba(0, 255, 163, 0.5);
+  transform: translateY(-2px);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 50%, #0D0D0D 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* Highlight.js dark theme for code syntax highlighting */
+.hljs {
+  background: #1e1e1e !important;
+  color: #e6e6e6 !important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #6a9955 !important;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #569cd6 !important;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #b5cea8 !important;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #ce9178 !important;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #dcdcaa !important;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #4ec9b0 !important;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #92c5f8 !important;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #d16969 !important;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #4ec9b0 !important;
+}
+
+.hljs-meta,
+.hljs-deletion {
+  color: #d16969 !important;
+}
+
+.hljs-addition {
+  color: #b5cea8 !important;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
