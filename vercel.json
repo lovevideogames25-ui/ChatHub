@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/gemma3-vercel.js": {
-      "runtime": "nodejs20.x"
+      "runtime": "now-php@1.0.0"
     }
   }
 }
