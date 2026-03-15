@@ -1,28 +1,7 @@
 {
   "functions": {
     "api/gemma3.js": {
-      "runtime": "node@20.x"
-    },
-    "api/gptoss.js": {
-      "runtime": "node@20.x"
-    },
-    "api/llama31.js": {
-      "runtime": "node@20.x"
-    },
-    "api/llama32.js": {
-      "runtime": "node@20.x"
-    },
-    "api/llama33.js": {
-      "runtime": "node@20.x"
-    },
-    "api/qwen35.js": {
-      "runtime": "node@20.x"
-    },
-    "api/nemotron.js": {
-      "runtime": "node@20.x"
-    },
-    "api/trinity.js": {
-      "runtime": "node@20.x"
+      "runtime": "nodejs20.x"
     }
   }
 }
