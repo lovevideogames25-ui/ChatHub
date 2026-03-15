@@ -1,7 +1,17 @@
 async function sendMessage(prompt, model) {
+  console.log('=== API CALL ===');
+  console.log('Model:', model);
+  console.log('Environment check:');
+  console.log('import.meta.env.DEV:', import.meta.env.DEV);
+  console.log('Available env vars:', Object.keys(process.env));
+  
   if (model === "GEMMA-3") {
     // Use HuggingFace OpenAI-compatible API route for GEMMA-3
     const serverUrl = import.meta.env.DEV ? 'http://localhost:3001' : '';
+    console.log('Server URL:', serverUrl);
+    console.log('HF_TOKEN exists:', !!process.env.HF_TOKEN);
+    console.log('HF_TOKEN length:', process.env.HF_TOKEN?.length || 0);
+    
     const response = await fetch(`${serverUrl}/api/gemma3`, {
       method: "POST",
       headers: {
