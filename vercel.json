@@ -1,42 +1,7 @@
 {
   "functions": {
-    "api/gemma3.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/gptoss.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/llama31.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/llama32.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/llama33.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/qwen35.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/nemotron.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    },
-    "api/trinity.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
+    "api/*.js": {
+      "runtime": "nodejs18.x"
     }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/"
-    }
-  ]
+  }
 }
