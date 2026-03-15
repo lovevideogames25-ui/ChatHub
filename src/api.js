@@ -3,14 +3,21 @@ async function sendMessage(prompt, model) {
   console.log('Model:', model);
   console.log('Environment check:');
   console.log('import.meta.env.DEV:', import.meta.env.DEV);
-  console.log('Available env vars:', Object.keys(process.env));
+  
+  // Check environment variables for both development and production
+  const isDev = import.meta.env.DEV;
+  const hfToken = import.meta.env.VITE_HF_TOKEN || import.meta.env.HF_TOKEN;
+  const openrouterToken = import.meta.env.VITE_OPENROUTER_API || import.meta.env.OPENROUTER_API;
+  
+  console.log('isDev:', isDev);
+  console.log('HF_TOKEN exists:', !!hfToken);
+  console.log('HF_TOKEN length:', hfToken?.length || 0);
+  console.log('Available env vars:', Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
   
   if (model === "GEMMA-3") {
     // Use HuggingFace OpenAI-compatible API route for GEMMA-3
-    const serverUrl = import.meta.env.DEV ? 'http://localhost:3001' : '';
+    const serverUrl = isDev ? 'http://localhost:3001' : '';
     console.log('Server URL:', serverUrl);
-    console.log('HF_TOKEN exists:', !!process.env.HF_TOKEN);
-    console.log('HF_TOKEN length:', process.env.HF_TOKEN?.length || 0);
     
     const response = await fetch(`${serverUrl}/api/gemma3`, {
       method: "POST",
@@ -85,11 +92,16 @@ async function sendMessage(prompt, model) {
 
   if (model === "NEMOTRON-3-SUPER") {
     // Use OpenRouter API route for Nemotron
-    const serverUrl = import.meta.env.DEV ? 'http://localhost:3001' : '';
+    const serverUrl = isDev ? 'http://localhost:3001' : '';
+    const openrouterToken = import.meta.env.VITE_OPENROUTER_API || import.meta.env.OPENROUTER_API;
+    console.log('OPENROUTER_API exists:', !!openrouterToken);
+    console.log('OPENROUTER_API length:', openrouterToken?.length || 0);
+    
     const response = await fetch(`${serverUrl}/api/nemotron`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${openrouterToken}`
       },
       body: JSON.stringify({
         prompt: prompt
