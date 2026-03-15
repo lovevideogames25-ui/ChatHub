@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/gemma3.js": {
+    "api/gemma3-vercel.js": {
       "runtime": "nodejs20.x"
     }
   }
