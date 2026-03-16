@@ -3,6 +3,7 @@ import Sidebar from '../sidebar/Sidebar';
 import ChatArea from '../chat/ChatArea';
 import AILicenses from '../components/AILicenses';
 import sendMessage from './api';
+import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
         isLoading={isLoading}
       />
       <AILicenses />
+      <Analytics />
     </div>
   );
 }

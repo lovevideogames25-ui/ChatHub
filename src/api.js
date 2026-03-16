@@ -12,6 +12,7 @@ async function sendMessage(prompt, model) {
   console.log('isDev:', isDev);
   console.log('HF_TOKEN exists:', !!hfToken);
   console.log('HF_TOKEN length:', hfToken?.length || 0);
+  console.log('VITE_HF_TOKEN exists:', !!import.meta.env.VITE_HF_TOKEN);
   console.log('Available env vars:', Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
   
   if (model === "GEMMA-3") {
