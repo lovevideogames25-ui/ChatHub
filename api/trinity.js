@@ -1,7 +1,7 @@
 import { OpenRouter } from "@openrouter/sdk";
 
 const openrouter = new OpenRouter({
-  apiKey: process.env.OPENROUTER_API
+  apiKey: process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API
 });
 
 export default async function handler(req, res) {
@@ -22,6 +22,9 @@ export default async function handler(req, res) {
   const { prompt } = req.body;
 
   try {
+    console.log("Trinity API call with prompt:", prompt);
+    console.log("API Key exists:", !!(process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API));
+
     // SDK call
     const stream = await openrouter.chat.send({
       model: "arcee-ai/trinity-large-preview:free",
@@ -37,6 +40,7 @@ export default async function handler(req, res) {
       if (content) response += content;
     }
 
+    console.log("Trinity SDK response:", response);
     res.status(200).json({ response });
 
   } catch (err) {
@@ -45,10 +49,13 @@ export default async function handler(req, res) {
 
     // Fallback to direct API
     try {
+      const apiKey = process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API;
+      console.log("Direct API call with key exists:", !!apiKey);
+      
       const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API}`,
+          Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -58,6 +65,7 @@ export default async function handler(req, res) {
       });
 
       const data = await r.json();
+      console.log("Direct API response:", data);
       const response = data.choices?.[0]?.message?.content || "No response";
 
       res.status(200).json({ response });
