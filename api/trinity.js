@@ -23,57 +23,70 @@ export default async function handler(req, res) {
 
   try {
     console.log("Trinity API call with prompt:", prompt);
-    console.log("API Key exists:", !!(process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API));
+    const apiKey = process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API;
+    console.log("API Key exists:", !!apiKey);
+    console.log("API Key length:", apiKey?.length || 0);
 
-    // SDK call
-    const stream = await openrouter.chat.send({
-      model: "arcee-ai/trinity-large-preview:free",
-      messages: [
-        { role: "user", content: prompt }
-      ],
-      stream: true
-    });
+    // Try different Trinity model names
+    const modelNames = [
+      "arcee-ai/trinity-large-preview:free",
+      "arcee-ai/trinity-large-preview",
+      "arcee/trinity-large-preview:free",
+      "arcee/trinity-large-preview"
+    ];
 
-    let response = "";
-    for await (const chunk of stream) {
-      const content = chunk.choices?.[0]?.delta?.content;
-      if (content) response += content;
+    let response = null;
+    let workingModel = null;
+
+    for (const modelName of modelNames) {
+      console.log(`Trying model: ${modelName}`);
+      
+      try {
+        const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://chathubai.vercel.app",
+            "X-Title": "ChatHub"
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [{ role: "user", content: prompt }],
+            max_tokens: 1000,
+            temperature: 0.7
+          })
+        });
+
+        const data = await r.json();
+        console.log(`Response for ${modelName}:`, data);
+        console.log(`Status for ${modelName}:`, r.status);
+
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          response = data.choices[0].message.content;
+          workingModel = modelName;
+          console.log(`Success with model: ${modelName}`);
+          break;
+        } else if (data.error) {
+          console.log(`Error with ${modelName}:`, data.error);
+          continue;
+        }
+      } catch (err) {
+        console.log(`Failed to call ${modelName}:`, err);
+        continue;
+      }
     }
 
-    console.log("Trinity SDK response:", response);
-    res.status(200).json({ response });
+    if (response) {
+      console.log(`Final Trinity response from ${workingModel}:`, response);
+      res.status(200).json({ response });
+    } else {
+      console.log("All Trinity models failed");
+      res.status(500).json({ response: "TRINITY-LARGE-PREVIEW not available - all model variants failed" });
+    }
 
   } catch (err) {
-
-    console.warn("SDK failed, falling back to direct API", err);
-
-    // Fallback to direct API
-    try {
-      const apiKey = process.env.VITE_OPENROUTER_API || process.env.OPENROUTER_API;
-      console.log("Direct API call with key exists:", !!apiKey);
-      
-      const r = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "arcee-ai/trinity-large-preview:free",
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
-
-      const data = await r.json();
-      console.log("Direct API response:", data);
-      const response = data.choices?.[0]?.message?.content || "No response";
-
-      res.status(200).json({ response });
-
-    } catch (err2) {
-      console.error("Direct API also failed", err2);
-      res.status(500).json({ response: "TRINITY-LARGE-PREVIEW not available" });
-    }
-
+    console.error("Trinity API completely failed", err);
+    res.status(500).json({ response: "TRINITY-LARGE-PREVIEW not available" });
   }
 }
