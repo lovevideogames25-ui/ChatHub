@@ -1,7 +1,14 @@
 {
-  "functions": {
-    "api/gemma3-vercel.js": {
-      "runtime": "@vercel/node@20"
+  "builds": [
+    {
+      "src": "**/*.php",
+      "use": "@now-php/php@1.0.0"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.php"
+    }
+  ]
 }
