@@ -13,12 +13,22 @@ function App() {
   ]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const models = [
+    { name: 'GPT-OSS', description: 'Advanced reasoning and analysis' },
+    { name: 'GEMMA-3', description: 'Google\'s efficient multimodal model' },
+    { name: 'LLAMA-3.1', description: 'Meta\'s balanced open-source model' },
+    { name: 'QWEN3.5', description: 'Alibaba\'s powerful multilingual model' },
+    { name: 'NEMOTRON-3-SUPER', description: 'NVIDIA\'s top-tier reasoning model' },
+    { name: 'TRINITY-LARGE-PREVIEW', description: 'Advanced conversational AI' },
+    { name: 'DEEPSEEK-V3.2', description: 'DeepSeek\'s advanced reasoning model' }
+  ];
+
   const handleSendMessage = async (userMessage) => {
-    // Only allow GPT-OSS, GEMMA-3, LLAMA3.2, LLAMA-3.1, QWEN3.5, NEMOTRON-3-SUPER, and TRINITY-LARGE-PREVIEW for now
-    if (selectedModel !== 'GPT-OSS' && selectedModel !== 'GEMMA-3' && selectedModel !== 'LLAMA3.2' && selectedModel !== 'LLAMA-3.1' && selectedModel !== 'QWEN3.5' && selectedModel !== 'NEMOTRON-3-SUPER' && selectedModel !== 'TRINITY-LARGE-PREVIEW') {
+    // Only allow GPT-OSS, GEMMA-3, LLAMA-3.1, QWEN3.5, NEMOTRON-3-SUPER, and TRINITY-LARGE-PREVIEW for now
+    if (!models.find(model => model.name === selectedModel)) {
       setMessages(prev => [...prev, { 
         role: "ai", 
-        text: `${selectedModel} is not available yet. Please select GPT-OSS, GEMMA-3, LLAMA3.2, LLAMA-3.1, QWEN3.5, NEMOTRON-3-SUPER, or TRINITY-LARGE-PREVIEW to chat.` 
+        text: `${selectedModel} is not available yet. Please select a supported model to chat.` 
       }]);
       return;
     }

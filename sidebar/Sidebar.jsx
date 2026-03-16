@@ -9,6 +9,7 @@ const models = [
   { name: 'QWEN3.5', status: 'WORKING' },
   { name: 'NEMOTRON-3-SUPER', status: 'WORKING' },
   { name: 'TRINITY-LARGE-PREVIEW', status: 'WORKING' },
+  { name: 'DEEPSEEK-V3.2', status: 'WORKING' },
 ];
 
 const Sidebar = ({ selectedModel, setSelectedModel }) => {

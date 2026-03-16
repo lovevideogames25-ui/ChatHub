@@ -6,13 +6,12 @@ async function sendMessage(prompt, model) {
   
   // Check environment variables for both development and production
   const isDev = import.meta.env.DEV;
-  const hfToken = import.meta.env.VITE_HF_TOKEN || import.meta.env.HF_TOKEN;
+  const hfToken = import.meta.env.VITE_HF_TOKEN;
   const openrouterToken = import.meta.env.VITE_OPENROUTER_API || import.meta.env.OPENROUTER_API;
   
   console.log('isDev:', isDev);
-  console.log('HF_TOKEN exists:', !!hfToken);
-  console.log('HF_TOKEN length:', hfToken?.length || 0);
   console.log('VITE_HF_TOKEN exists:', !!import.meta.env.VITE_HF_TOKEN);
+  console.log('VITE_HF_TOKEN length:', import.meta.env.VITE_HF_TOKEN?.length || 0);
   console.log('Available env vars:', Object.keys(import.meta.env).filter(key => key.startsWith('VITE_')));
   
   if (model === "GEMMA-3") {
@@ -71,9 +70,53 @@ async function sendMessage(prompt, model) {
     return responseText;
   }
 
-  if (model === "LLAMA3.2") {
-    // LLAMA-3.2 is currently down due to HuggingFace service issues
-    throw new Error("LLAMA-3.2 is currently unavailable due to HuggingFace service issues. Please try using GPT-OSS, GEMMA-3, or LLAMA-3.1 instead.");
+  
+  if (model === "DEEPSEEK-V3.2") {
+    // Use HuggingFace API route for DEEPSEEK-V3.2
+    const serverUrl = isDev ? 'http://localhost:3001' : '';
+    const response = await fetch(`${serverUrl}/api/deepseekv32`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: prompt
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.error) {
+      console.error('DEEPSEEK-V3.2 API Error:', data.error);
+      throw new Error(data.error || "DEEPSEEK-V3.2 API request failed");
+    }
+    
+    // Ensure response is a string
+    let responseText = data.response;
+    console.log('Original response:', responseText);
+    console.log('Response type:', typeof responseText);
+    
+    // Handle OpenAI-style response structure
+    if (responseText && typeof responseText === 'object') {
+      console.log('Response is object, extracting content...');
+      if (responseText.message && responseText.message.content) {
+        responseText = responseText.message.content;
+      } else if (responseText.content) {
+        responseText = responseText.content;
+      } else if (responseText.choices && responseText.choices[0] && responseText.choices[0].message) {
+        responseText = responseText.choices[0].message.content;
+      } else {
+        responseText = JSON.stringify(responseText);
+      }
+    }
+    
+    if (typeof responseText !== 'string') {
+      console.log('Response is not a string, converting:', responseText);
+      responseText = String(responseText || 'No response');
+    }
+    
+    console.log('Final response text:', responseText);
+    return responseText;
   }
 
   if (model === "LLAMA-3.1") {

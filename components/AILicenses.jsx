@@ -32,6 +32,8 @@ const AILicenses = () => {
       window.open('https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/', '_blank');
     } else if (model === 'TRINITY-LARGE-PREVIEW') {
       window.open('https://huggingface.co/datasets/choosealicense/licenses/blob/main/markdown/apache-2.0.md', '_blank');
+    } else if (model === 'DEEPSEEK-V3.2') {
+      window.open('https://github.com/deepseek-ai/DeepSeek-V3/blob/main/LICENSE.md', '_blank');
     }
   };
 
@@ -43,6 +45,7 @@ const AILicenses = () => {
     { model: 'QWEN3.5', license: 'Apache 2.0', clickable: true },
     { model: 'NEMOTRON-3-SUPER', license: 'NVIDIA Open Model License', clickable: true },
     { model: 'TRINITY-LARGE-PREVIEW', license: 'Open Model License', clickable: true },
+    { model: 'DEEPSEEK-V3.2', license: 'DeepSeek License', clickable: true },
   ];
 
   if (!isVisible) {
