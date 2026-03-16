@@ -5,7 +5,7 @@ All notable changes to ChatHub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2026-03-15
+## [1.1.0] - 2026-03-16
 
 ### Fixed
 - ✅ **GEMMA-3 Model**: Fixed connectivity issues using HuggingFace OpenAI-compatible API
@@ -132,16 +132,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [ ] **Mobile App**: React Native version
 - [ ] **API Access**: Public API for third-party integrations
 
-### 📅 Release Timeline
+### Release Timeline
 
 | Version | Target Date | Status | Focus |
 |---------|-------------|--------|-------|
-| v1.1.0 | ✅ March 15, 2026 | Released | UI Enhancement + GEMMA-3 Fix |
-| v1.2.0 | 📅 May 2026 | Planning | Chat History + Settings |
-| v1.3.0 | 📅 August 2026 | Research | Plugins + Voice + Mobile |
-| v2.0.0 | 📅 Q4 2026 | Concept | Major Architecture Update |
+| v1.1.0 | March 16, 2026 | Released | UI Enhancement + GEMMA-3 Fix |
+| v1.2.0 | May 2026 | Planning | Chat History + Settings |
+| v1.3.0 | August 2026 | Research | Plugins + Voice + Mobile |
+| v2.0.0 | Q4 2026 | Concept | Major Architecture Update |
 
-### 🎯 Development Priorities
+### Development Priorities
 
 #### High Priority
 1. **Chat History** - Most requested feature
