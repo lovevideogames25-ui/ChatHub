@@ -45,11 +45,29 @@ async function sendMessage(prompt, model) {
     
     // Ensure response is a string
     let responseText = data.response;
+    console.log('Original response:', responseText);
+    console.log('Response type:', typeof responseText);
+    
+    // Handle OpenAI-style response structure
+    if (responseText && typeof responseText === 'object') {
+      console.log('Response is object, extracting content...');
+      if (responseText.message && responseText.message.content) {
+        responseText = responseText.message.content;
+      } else if (responseText.content) {
+        responseText = responseText.content;
+      } else if (responseText.choices && responseText.choices[0] && responseText.choices[0].message) {
+        responseText = responseText.choices[0].message.content;
+      } else {
+        responseText = JSON.stringify(responseText);
+      }
+    }
+    
     if (typeof responseText !== 'string') {
       console.log('Response is not a string, converting:', responseText);
       responseText = String(responseText || 'No response');
     }
     
+    console.log('Final response text:', responseText);
     return responseText;
   }
 
