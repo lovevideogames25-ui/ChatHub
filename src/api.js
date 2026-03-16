@@ -30,14 +30,27 @@ async function sendMessage(prompt, model) {
       })
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response ok:', response.ok);
+
     const data = await response.json();
+    console.log('API Response data:', data);
+    console.log('Response type:', typeof data);
+    console.log('Response keys:', Object.keys(data));
     
     if (data.error) {
       console.error('GEMMA-3 API Error:', data.error);
       throw new Error(data.error || "GEMMA-3 API request failed");
     }
     
-    return data.response;
+    // Ensure response is a string
+    let responseText = data.response;
+    if (typeof responseText !== 'string') {
+      console.log('Response is not a string, converting:', responseText);
+      responseText = String(responseText || 'No response');
+    }
+    
+    return responseText;
   }
 
   if (model === "LLAMA3.2") {
