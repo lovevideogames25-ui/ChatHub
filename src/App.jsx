@@ -3,6 +3,7 @@ import Sidebar from '../sidebar/Sidebar';
 import ChatArea from '../chat/ChatArea';
 import AILicenses from '../components/AILicenses';
 import ChatHistory from './ChatHistory';
+import Settings from './Settings';
 import sendMessage from './api';
 import { saveConversation } from './chatHistoryUtil';
 import { Analytics } from '@vercel/analytics/react';
@@ -103,6 +104,7 @@ function App() {
         isLoading={isLoading}
       />
       <ChatHistory onLoadConversation={handleLoadConversation} />
+      <Settings />
       <AILicenses />
       <Analytics />
     </div>
