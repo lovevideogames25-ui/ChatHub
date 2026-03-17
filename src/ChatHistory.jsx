@@ -34,6 +34,44 @@ function ChatHistory({ onLoadConversation }) {
     }
   };
 
+  const handleLoadAllConversations = () => {
+    if (onLoadConversation && history.length > 0) {
+      // Combine all conversations into one
+      const allMessages = [];
+      let lastModel = 'GPT-OSS'; // default
+
+      history.forEach(conv => {
+        // Add a separator between conversations
+        if (allMessages.length > 0) {
+          allMessages.push({
+            role: "ai",
+            text: `--- Switched to ${conv.model} ---`
+          });
+        }
+        
+        // Add all messages from this conversation
+        conv.messages.forEach(msg => {
+          allMessages.push({
+            role: msg.role,
+            text: msg.content
+          });
+        });
+        
+        lastModel = conv.model;
+      });
+
+      // Create a combined conversation object
+      const combinedConversation = {
+        id: 'all-conversations',
+        timestamp: new Date().toISOString(),
+        model: lastModel,
+        messages: allMessages
+      };
+
+      onLoadConversation(combinedConversation);
+    }
+  };
+
   const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleString();
   };
@@ -51,13 +89,22 @@ function ChatHistory({ onLoadConversation }) {
         <div className="history-panel">
           <div className="history-header">
             <h3>Chat Memory</h3>
-            <button 
-              className="clear-history-btn"
-              onClick={handleClearHistory}
-              disabled={history.length === 0}
-            >
-              Clear Memory
-            </button>
+            <div className="header-actions">
+              <button 
+                className="load-all-btn"
+                onClick={handleLoadAllConversations}
+                disabled={history.length === 0}
+              >
+                LOAD ALL
+              </button>
+              <button 
+                className="clear-history-btn"
+                onClick={handleClearHistory}
+                disabled={history.length === 0}
+              >
+                Clear Memory
+              </button>
+            </div>
           </div>
           
           {history.length === 0 ? (
