@@ -458,47 +458,6 @@ app.post("/api/trinity", async (req, res) => {
   }
 });
 
-app.post("/api/deepseekv32", async (req, res) => {
-  const { prompt } = req.body;
-
-  try {
-    console.log("Making DEEPSEEK-V3.2 API call with prompt:", prompt);
-    console.log("HF Token exists:", !(process.env.VITE_HF_TOKEN || process.env.HF_TOKEN));
-    
-    if (!process.env.VITE_HF_TOKEN && !process.env.HF_TOKEN) {
-      console.error("No HF_TOKEN available for DEEPSEEK-V3.2");
-      return res.status(500).json({ response: "DEEPSEEK-V3.2 not available - missing API token" });
-    }
-
-    console.log("Using model: deepseek-ai/DeepSeek-V3.2:novita");
-    console.log("HF Token being used:", process.env.VITE_HF_TOKEN || process.env.HF_TOKEN);
-
-    const completion = await hfClient.chat.completions.create({
-      model: "deepseek-ai/DeepSeek-V3.2:novita",
-      messages: [
-        {
-          role: "user",
-          content: prompt
-        }
-      ]
-    });
-
-    const response = completion.choices?.[0]?.message?.content || "No response";
-    console.log("DEEPSEEK-V3.2 API Response:", response);
-    res.status(200).json({ response });
-
-  } catch (err) {
-    console.error("DEEPSEEK-V3.2 Full error:", err);
-    console.error("Error type:", err.constructor.name);
-    console.error("Error message:", err.message);
-    console.error("Error stack:", err.stack);
-    res.status(500).json({ 
-      response: "DEEPSEEK-V3.2 not available",
-      error: err.message 
-    });
-  }
-});
-
 // Simple test route
 app.post("/api/test", async (req, res) => {
   console.log("Test route called");
