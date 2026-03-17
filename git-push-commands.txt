@@ -1,0 +1,88 @@
+# Git Push Commands for ChatHub Repositories
+
+## Main Repository (Production)
+https://github.com/lovevideogames25-ui/ChatHub
+
+### Push to Main Repo
+```cmd
+# Remove test remote if exists
+git remote remove test
+
+# Add main remote
+git remote add origin https://github.com/lovevideogames25-ui/ChatHub.git
+
+# Push to main
+git push -u origin main
+```
+
+## Test Repository (Development)
+https://github.com/lovevideogames25-ui/CHATHUB-TEST-WEB/
+
+### Push to Test Repo
+```cmd
+# Remove main remote if exists
+git remote remove origin
+
+# Add test remote
+git remote add origin https://github.com/lovevideogames25-ui/CHATHUB-TEST-WEB.git
+
+# Push to test
+git push -u origin main
+```
+
+## Quick Switch Between Repos
+
+### Switch to Main Repo
+```cmd
+git remote remove origin
+git remote add origin https://github.com/lovevideogames25-ui/ChatHub.git
+git push -u origin main
+```
+
+### Switch to Test Repo
+```cmd
+git remote remove origin
+git remote add origin https://github.com/lovevideogames25-ui/CHATHUB-TEST-WEB.git
+git push -u origin main
+```
+
+## Check Current Remote
+```cmd
+git remote -v
+```
+
+## Add Both Remotes (Optional)
+```cmd
+# Add main as origin
+git remote add origin https://github.com/lovevideogames25-ui/ChatHub.git
+
+# Add test as test
+git remote add test https://github.com/lovevideogames25-ui/CHATHUB-TEST-WEB.git
+
+# Push to main
+git push origin main
+
+# Push to test
+git push test main
+```
+
+## Complete Workflow
+```cmd
+# Stage changes
+git add .
+
+# Commit changes
+git commit -m "Your commit message"
+
+# Push to desired repo (choose one)
+git push -u origin main          # For main repo
+# OR
+git push -u test main            # For test repo
+```
+
+## Notes
+- Always check current remote with `git remote -v` before pushing
+- Use descriptive commit messages
+- Make sure you're on the correct branch (main)
+- Test repo: https://github.com/lovevideogames25-ui/CHATHUB-TEST-WEB/
+- Main repo: https://github.com/lovevideogames25-ui/ChatHub

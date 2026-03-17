@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Sidebar from '../sidebar/Sidebar';
 import ChatArea from '../chat/ChatArea';
 import AILicenses from '../components/AILicenses';
+import ChatHistory from './ChatHistory';
 import sendMessage from './api';
+import { saveConversation } from './chatHistoryUtil';
 import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
@@ -24,7 +26,7 @@ function App() {
   ];
 
   const handleSendMessage = async (userMessage) => {
-    // Only allow GPT-OSS, GEMMA-3, LLAMA-3.1, QWEN3.5, NEMOTRON-3-SUPER, and TRINITY-LARGE-PREVIEW for now
+    // Only allow GPT-OSS, GEMMA-3, LLAMA-3.1, QWEN3.5, NEMOTRON-3-SUPER, TRINITY-LARGE-PREVIEW, and DEEPSEEK-V3.2 for now
     if (!models.find(model => model.name === selectedModel)) {
       setMessages(prev => [...prev, { 
         role: "ai", 
@@ -38,7 +40,16 @@ function App() {
 
     try {
       const aiResponse = await sendMessage(userMessage, selectedModel);
-      setMessages(prev => [...prev, { role: "ai", text: aiResponse }]);
+      const aiMessage = { role: "ai", text: aiResponse };
+      setMessages(prev => [...prev, aiMessage]);
+      
+      // Save conversation to history
+      const conversationMessages = [
+        { role: "user", content: userMessage },
+        { role: "ai", content: aiResponse }
+      ];
+      saveConversation(selectedModel, conversationMessages);
+      
     } catch (error) {
       console.error('Error sending message:', error);
       setMessages(prev => [...prev, { 
@@ -59,6 +70,7 @@ function App() {
         selectedModel={selectedModel}
         isLoading={isLoading}
       />
+      <ChatHistory />
       <AILicenses />
       <Analytics />
     </div>
