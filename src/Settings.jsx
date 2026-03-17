@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Settings() {
+function Settings({ updateSettings }) {
   const [isOpen, setIsOpen] = useState(false);
   const [settings, setSettings] = useState({
     theme: 'dark',
@@ -20,13 +20,16 @@ function Settings() {
     // Load settings from localStorage
     const savedSettings = localStorage.getItem('chatHubSettings');
     if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+      const parsedSettings = JSON.parse(savedSettings);
+      setSettings(parsedSettings);
     }
   }, []);
 
   const saveSettings = (newSettings) => {
     setSettings(newSettings);
-    localStorage.setItem('chatHubSettings', JSON.stringify(newSettings));
+    if (updateSettings) {
+      updateSettings(newSettings);
+    }
   };
 
   const handleSettingChange = (key, value) => {

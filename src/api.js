@@ -1,8 +1,12 @@
-async function sendMessage(prompt, model) {
+async function sendMessage(prompt, model, options = {}) {
   console.log('=== API CALL ===');
   console.log('Model:', model);
+  console.log('Options:', options);
   console.log('Environment check:');
   console.log('import.meta.env.DEV:', import.meta.env.DEV);
+  
+  // Extract settings from options
+  const { maxTokens = 4000, temperature = 0.7, timeout = 30000 } = options;
   
   // Check environment variables for both development and production
   const isDev = import.meta.env.DEV;

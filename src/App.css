@@ -587,3 +587,51 @@ body {
 .save-settings-btn:hover {
   background: #059669;
 }
+
+/* Theme Styles */
+body.light {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #1e293b;
+}
+
+body.dark {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  color: var(--text-primary);
+}
+
+body.auto {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  color: var(--text-primary);
+}
+
+@media (prefers-color-scheme: light) {
+  body.auto {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #1e293b;
+  }
+}
+
+/* Compact Mode */
+body.compact-mode .app {
+  font-size: 0.9em;
+}
+
+body.compact-mode .history-panel,
+body.compact-mode .settings-panel {
+  transform: scale(0.9);
+  transform-origin: top right;
+}
+
+body.compact-mode .conversation-item {
+  padding: 8px;
+  margin-bottom: 4px;
+}
+
+body.compact-mode .message {
+  padding: 6px;
+  margin-bottom: 4px;
+}
+
+body.compact-mode .setting-item {
+  margin-bottom: 8px;
+}

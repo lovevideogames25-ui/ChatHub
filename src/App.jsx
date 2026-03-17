@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../sidebar/Sidebar';
 import ChatArea from '../chat/ChatArea';
 import AILicenses from '../components/AILicenses';
@@ -15,6 +15,54 @@ function App() {
     { role: "ai", text: "Welcome to ChatHub! Select a model and start chatting." }
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [settings, setSettings] = useState({
+    theme: 'dark',
+    fontSize: 'medium',
+    autoSave: true,
+    soundEffects: false,
+    apiTimeout: 30,
+    maxTokens: 4000,
+    temperature: 0.7,
+    showTimestamps: true,
+    compactMode: false,
+    exportFormat: 'json',
+    language: 'en'
+  });
+
+  // Load settings on mount
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('chatHubSettings');
+    if (savedSettings) {
+      const parsedSettings = JSON.parse(savedSettings);
+      setSettings(parsedSettings);
+      applySettings(parsedSettings);
+    }
+  }, []);
+
+  // Apply settings to the app
+  const applySettings = (newSettings) => {
+    // Apply theme
+    document.body.className = newSettings.theme;
+    
+    // Apply font size
+    document.body.style.fontSize = 
+      newSettings.fontSize === 'small' ? '14px' :
+      newSettings.fontSize === 'large' ? '18px' : '16px';
+    
+    // Apply compact mode
+    if (newSettings.compactMode) {
+      document.body.classList.add('compact-mode');
+    } else {
+      document.body.classList.remove('compact-mode');
+    }
+  };
+
+  // Update settings and apply them
+  const updateSettings = (newSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem('chatHubSettings', JSON.stringify(newSettings));
+    applySettings(newSettings);
+  };
 
   const models = [
     { name: 'GPT-OSS', description: 'Advanced reasoning and analysis' },
@@ -40,16 +88,28 @@ function App() {
     setIsLoading(true);
 
     try {
-      const aiResponse = await sendMessage(userMessage, selectedModel);
+      // Pass settings to sendMessage
+      const aiResponse = await sendMessage(userMessage, selectedModel, {
+        maxTokens: settings.maxTokens,
+        temperature: settings.temperature,
+        timeout: settings.apiTimeout * 1000 // Convert to milliseconds
+      });
       const aiMessage = { role: "ai", text: aiResponse };
       setMessages(prev => [...prev, aiMessage]);
       
-      // Save conversation to history
-      const conversationMessages = [
-        { role: "user", content: userMessage },
-        { role: "ai", content: aiResponse }
-      ];
-      saveConversation(selectedModel, conversationMessages);
+      // Save conversation to history if auto-save is enabled
+      if (settings.autoSave) {
+        const conversationMessages = [
+          { role: "user", content: userMessage },
+          { role: "ai", content: aiResponse }
+        ];
+        saveConversation(selectedModel, conversationMessages);
+      }
+      
+      // Play sound effect if enabled
+      if (settings.soundEffects) {
+        playNotificationSound();
+      }
       
     } catch (error) {
       console.error('Error sending message:', error);
@@ -59,6 +119,17 @@ function App() {
       }]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Sound effect function
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+      audio.volume = 0.3;
+      audio.play().catch(() => {}); // Ignore errors
+    } catch (error) {
+      // Ignore sound errors
     }
   };
 
@@ -104,7 +175,7 @@ function App() {
         isLoading={isLoading}
       />
       <ChatHistory onLoadConversation={handleLoadConversation} />
-      <Settings />
+      <Settings updateSettings={updateSettings} />
       <AILicenses />
       <Analytics />
     </div>
