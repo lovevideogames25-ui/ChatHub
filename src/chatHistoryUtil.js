@@ -1,16 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-
-const HISTORY_FILE = path.join(process.cwd(), 'chat_history.json');
+// Browser-compatible chat history using localStorage
 
 // Load existing chat history
 export function loadChatHistory() {
   try {
-    if (fs.existsSync(HISTORY_FILE)) {
-      const data = fs.readFileSync(HISTORY_FILE, 'utf8');
-      return JSON.parse(data);
-    }
-    return [];
+    const history = localStorage.getItem('chatHistory');
+    return history ? JSON.parse(history) : [];
   } catch (error) {
     console.error('Error loading chat history:', error);
     return [];
@@ -33,7 +27,7 @@ export function saveConversation(model, messages) {
     };
     
     history.push(conversation);
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2));
+    localStorage.setItem('chatHistory', JSON.stringify(history));
     console.log('Conversation saved to chat history');
   } catch (error) {
     console.error('Error saving conversation:', error);
@@ -51,7 +45,7 @@ export function deleteConversation(id) {
   try {
     const history = loadChatHistory();
     const updatedHistory = history.filter(conv => conv.id !== id);
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(updatedHistory, null, 2));
+    localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
     console.log('Conversation deleted from chat history');
   } catch (error) {
     console.error('Error deleting conversation:', error);
@@ -61,7 +55,7 @@ export function deleteConversation(id) {
 // Clear all chat history
 export function clearChatHistory() {
   try {
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify([], null, 2));
+    localStorage.removeItem('chatHistory');
     console.log('Chat history cleared');
   } catch (error) {
     console.error('Error clearing chat history:', error);
