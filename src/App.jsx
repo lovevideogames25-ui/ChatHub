@@ -41,13 +41,16 @@ function App() {
 
   // Apply settings to the app
   const applySettings = (newSettings) => {
+    console.log('Applying settings:', newSettings);
+    
     // Apply theme
     document.body.className = newSettings.theme;
     
     // Apply font size
-    document.body.style.fontSize = 
+    const fontSize = 
       newSettings.fontSize === 'small' ? '14px' :
       newSettings.fontSize === 'large' ? '18px' : '16px';
+    document.body.style.fontSize = fontSize;
     
     // Apply compact mode
     if (newSettings.compactMode) {
@@ -55,6 +58,40 @@ function App() {
     } else {
       document.body.classList.remove('compact-mode');
     }
+    
+    // Apply theme-specific styles
+    if (newSettings.theme === 'light') {
+      document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
+      document.body.style.color = '#1e293b';
+    } else if (newSettings.theme === 'dark') {
+      document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)';
+      document.body.style.color = '#ffffff';
+    } else if (newSettings.theme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)';
+        document.body.style.color = '#ffffff';
+      } else {
+        document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
+        document.body.style.color = '#1e293b';
+      }
+    }
+    
+    // Show notification for theme change
+    const indicator = document.createElement('div');
+    indicator.className = 'sound-indicator show';
+    indicator.textContent = `🎨 Theme: ${newSettings.theme.charAt(0).toUpperCase() + newSettings.theme.slice(1)}`;
+    indicator.style.background = newSettings.theme === 'light' ? '#3b82f6' : '#6b7280';
+    document.body.appendChild(indicator);
+    
+    setTimeout(() => {
+      indicator.classList.remove('show');
+      setTimeout(() => {
+        if (document.body.contains(indicator)) {
+          document.body.removeChild(indicator);
+        }
+      }, 300);
+    }, 2000);
   };
 
   // Update settings and apply them
@@ -122,12 +159,27 @@ function App() {
     }
   };
 
-  // Sound effect function
+  // Sound effect function with visual indicator
   const playNotificationSound = () => {
     try {
+      // Show sound indicator
+      const indicator = document.createElement('div');
+      indicator.className = 'sound-indicator show';
+      indicator.textContent = '🔊 Sound Played';
+      document.body.appendChild(indicator);
+      
+      // Play sound
       const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
       audio.volume = 0.3;
       audio.play().catch(() => {}); // Ignore errors
+      
+      // Hide indicator after 2 seconds
+      setTimeout(() => {
+        indicator.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(indicator);
+        }, 300);
+      }, 2000);
     } catch (error) {
       // Ignore sound errors
     }
@@ -174,7 +226,7 @@ function App() {
         selectedModel={selectedModel}
         isLoading={isLoading}
       />
-      <ChatHistory onLoadConversation={handleLoadConversation} />
+      <ChatHistory onLoadConversation={handleLoadConversation} settings={settings} />
       <Settings updateSettings={updateSettings} />
       <AILicenses />
       <Analytics />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { loadChatHistory, clearChatHistory, exportChatHistory, importChatHistory } from './chatHistoryUtil';
 
-function ChatHistory({ onLoadConversation }) {
+function ChatHistory({ onLoadConversation, settings }) {
   const [history, setHistory] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -107,6 +107,9 @@ function ChatHistory({ onLoadConversation }) {
   };
 
   const formatDate = (timestamp) => {
+    if (!settings?.showTimestamps) {
+      return ''; // Don't show timestamp if disabled
+    }
     return new Date(timestamp).toLocaleString();
   };
 
