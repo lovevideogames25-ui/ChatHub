@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loadChatHistory, clearChatHistory } from './chatHistoryUtil';
+import { loadChatHistory, clearChatHistory, exportChatHistory, importChatHistory } from './chatHistoryUtil';
 
 function ChatHistory({ onLoadConversation }) {
   const [history, setHistory] = useState([]);
@@ -32,6 +32,30 @@ function ChatHistory({ onLoadConversation }) {
     if (onLoadConversation) {
       onLoadConversation(conversation);
     }
+  };
+
+  const handleExportHistory = () => {
+    exportChatHistory();
+  };
+
+  const handleImportHistory = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const importedHistory = await importChatHistory(file);
+          setHistory(importedHistory);
+          console.log('Chat history imported successfully');
+        } catch (error) {
+          console.error('Import failed:', error);
+          alert('Import failed: ' + error.message);
+        }
+      }
+    };
+    input.click();
   };
 
   const handleLoadAllConversations = () => {
@@ -100,6 +124,19 @@ function ChatHistory({ onLoadConversation }) {
           <div className="history-header">
             <h3>Chat Memory</h3>
             <div className="header-actions">
+              <button 
+                className="export-btn"
+                onClick={handleExportHistory}
+                disabled={history.length === 0}
+              >
+                EXPORT
+              </button>
+              <button 
+                className="import-btn"
+                onClick={handleImportHistory}
+              >
+                LOAD MEMORY
+              </button>
               <button 
                 className="load-all-btn"
                 onClick={handleLoadAllConversations}
