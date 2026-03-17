@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { loadChatHistory, deleteConversation, clearChatHistory } from './chatHistoryUtil';
 
-function ChatHistory() {
+function ChatHistory({ onLoadConversation }) {
   const [history, setHistory] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +26,12 @@ function ChatHistory() {
       clearChatHistory();
       setHistory([]);
       setSelectedConversation(null);
+    }
+  };
+
+  const handleLoadConversation = (conversation) => {
+    if (onLoadConversation) {
+      onLoadConversation(conversation);
     }
   };
 
@@ -69,15 +75,26 @@ function ChatHistory() {
                     <div className="conversation-header">
                       <span className="model-name">{conv.model}</span>
                       <span className="timestamp">{formatDate(conv.timestamp)}</span>
-                      <button 
-                        className="delete-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteConversation(conv.id);
-                        }}
-                      >
-                        Delete
-                      </button>
+                      <div className="conversation-actions">
+                        <button 
+                          className="load-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLoadConversation(conv);
+                          }}
+                        >
+                          LOAD
+                        </button>
+                        <button 
+                          className="delete-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteConversation(conv.id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                     <div className="conversation-preview">
                       {conv.messages[0]?.content?.substring(0, 50)}...

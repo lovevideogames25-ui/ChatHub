@@ -61,6 +61,26 @@ function App() {
     }
   };
 
+  const handleLoadConversation = (conversation) => {
+    // Convert saved messages back to the format expected by ChatArea
+    const loadedMessages = conversation.messages.map(msg => ({
+      role: msg.role,
+      text: msg.content
+    }));
+    
+    // Set the selected model to the one used in the conversation
+    setSelectedModel(conversation.model);
+    
+    // Set the messages (add welcome message back)
+    setMessages([
+      { role: "ai", text: "Welcome to ChatHub! Select a model and start chatting." },
+      ...loadedMessages
+    ]);
+    
+    // Close the history panel
+    console.log(`Loaded conversation with ${conversation.model}`);
+  };
+
   return (
     <div className="app">
       <Sidebar selectedModel={selectedModel} setSelectedModel={setSelectedModel} />
@@ -70,7 +90,7 @@ function App() {
         selectedModel={selectedModel}
         isLoading={isLoading}
       />
-      <ChatHistory />
+      <ChatHistory onLoadConversation={handleLoadConversation} />
       <AILicenses />
       <Analytics />
     </div>
