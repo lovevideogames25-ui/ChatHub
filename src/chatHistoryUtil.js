@@ -40,18 +40,6 @@ export function getConversationsByModel(model) {
   return history.filter(conv => conv.model === model);
 }
 
-// Delete conversation by ID
-export function deleteConversation(id) {
-  try {
-    const history = loadChatHistory();
-    const updatedHistory = history.filter(conv => conv.id !== id);
-    localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
-    console.log('Conversation deleted from chat history');
-  } catch (error) {
-    console.error('Error deleting conversation:', error);
-  }
-}
-
 // Clear all chat history
 export function clearChatHistory() {
   try {

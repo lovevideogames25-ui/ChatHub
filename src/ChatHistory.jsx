@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { loadChatHistory, deleteConversation, clearChatHistory } from './chatHistoryUtil';
+import { loadChatHistory, clearChatHistory } from './chatHistoryUtil';
 
 function ChatHistory({ onLoadConversation }) {
   const [history, setHistory] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [showWarning, setShowWarning] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -13,20 +13,19 @@ function ChatHistory({ onLoadConversation }) {
     }
   }, [isOpen]);
 
-  const handleDeleteConversation = (id) => {
-    deleteConversation(id);
-    setHistory(prev => prev.filter(conv => conv.id !== id));
-    if (selectedConversation?.id === id) {
-      setSelectedConversation(null);
-    }
+  const handleClearHistory = () => {
+    setShowWarning(true);
   };
 
-  const handleClearHistory = () => {
-    if (window.confirm('Are you sure you want to clear all chat history?')) {
-      clearChatHistory();
-      setHistory([]);
-      setSelectedConversation(null);
-    }
+  const confirmClearHistory = () => {
+    clearChatHistory();
+    setHistory([]);
+    setShowWarning(false);
+    console.log('All chat memory cleared');
+  };
+
+  const cancelClearHistory = () => {
+    setShowWarning(false);
   };
 
   const handleLoadConversation = (conversation) => {
@@ -45,80 +44,84 @@ function ChatHistory({ onLoadConversation }) {
         className="history-toggle-btn"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? 'Hide History' : 'Show History'}
+        {isOpen ? 'Hide Memory' : 'Show Memory'}
       </button>
       
       {isOpen && (
         <div className="history-panel">
           <div className="history-header">
-            <h3>Chat History</h3>
+            <h3>Chat Memory</h3>
             <button 
               className="clear-history-btn"
               onClick={handleClearHistory}
               disabled={history.length === 0}
             >
-              Clear All
+              Clear Memory
             </button>
           </div>
           
-          <div className="history-content">
-            <div className="conversation-list">
-              {history.length === 0 ? (
-                <p>No chat history yet</p>
-              ) : (
-                history.map(conv => (
-                  <div 
-                    key={conv.id}
-                    className={`conversation-item ${selectedConversation?.id === conv.id ? 'active' : ''}`}
-                    onClick={() => setSelectedConversation(conv)}
-                  >
-                    <div className="conversation-header">
-                      <span className="model-name">{conv.model}</span>
-                      <span className="timestamp">{formatDate(conv.timestamp)}</span>
-                      <div className="conversation-actions">
-                        <button 
-                          className="load-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleLoadConversation(conv);
-                          }}
-                        >
-                          LOAD
-                        </button>
-                        <button 
-                          className="delete-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteConversation(conv.id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                    <div className="conversation-preview">
-                      {conv.messages[0]?.content?.substring(0, 50)}...
-                    </div>
-                  </div>
-                ))
-              )}
+          {history.length === 0 ? (
+            <div className="no-history">
+              <p>No chat memory yet</p>
             </div>
-            
-            {selectedConversation && (
-              <div className="conversation-detail">
-                <div className="detail-header">
-                  <h4>{selectedConversation.model} - {formatDate(selectedConversation.timestamp)}</h4>
+          ) : (
+            <div className="conversation-list">
+              {history.map(conv => (
+                <div 
+                  key={conv.id}
+                  className="conversation-item"
+                  onClick={() => handleLoadConversation(conv)}
+                >
+                  <div className="conversation-header">
+                    <span className="model-name">{conv.model}</span>
+                    <span className="timestamp">{formatDate(conv.timestamp)}</span>
+                    <button 
+                      className="load-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLoadConversation(conv);
+                      }}
+                    >
+                      LOAD
+                    </button>
+                  </div>
+                  <div className="conversation-preview">
+                    {conv.messages[0]?.content?.substring(0, 50)}...
+                  </div>
                 </div>
-                <div className="messages">
-                  {selectedConversation.messages.map((msg, index) => (
-                    <div key={index} className={`message ${msg.role}`}>
-                      <div className="message-role">{msg.role.toUpperCase()}</div>
-                      <div className="message-content">{msg.content}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Enhanced Warning Modal */}
+      {showWarning && (
+        <div className="warning-overlay">
+          <div className="warning-modal">
+            <div className="warning-icon">⚠️</div>
+            <h2>WARNING: THIS CLEARS YOUR WHOLE CHAT MEMORY</h2>
+            <p>Are you absolutely sure you want to delete all your chat history?</p>
+            <p>This action cannot be undone and will permanently erase:</p>
+            <ul>
+              <li>All conversations from every AI model</li>
+              <li>Your entire chat history</li>
+              <li>All saved messages and responses</li>
+            </ul>
+            <div className="warning-actions">
+              <button 
+                className="confirm-delete-btn"
+                onClick={confirmClearHistory}
+              >
+                YES, DELETE EVERYTHING
+              </button>
+              <button 
+                className="cancel-delete-btn"
+                onClick={cancelClearHistory}
+              >
+                CANCEL - KEEP MY MEMORY
+              </button>
+            </div>
           </div>
         </div>
       )}
