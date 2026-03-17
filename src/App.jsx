@@ -64,8 +64,8 @@ function App() {
   const handleLoadConversation = (conversation) => {
     // Convert saved messages back to the format expected by ChatArea
     const loadedMessages = conversation.messages.map(msg => ({
-      role: msg.role,
-      text: msg.content
+      role: msg.role || 'user',
+      text: String(msg.content || '')
     }));
     
     // Set the selected model to the one used in the conversation

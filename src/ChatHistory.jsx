@@ -51,9 +51,11 @@ function ChatHistory({ onLoadConversation }) {
         
         // Add all messages from this conversation
         conv.messages.forEach(msg => {
+          // Ensure content exists and is a string
+          const content = msg.content || '';
           allMessages.push({
-            role: msg.role,
-            text: msg.content
+            role: msg.role || 'user',
+            text: String(content)
           });
         });
         
