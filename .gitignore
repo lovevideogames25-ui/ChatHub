@@ -116,3 +116,8 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+
+# Text files (git commands, notes, etc.)
+*.txt
+git-commands.txt
+*.log
