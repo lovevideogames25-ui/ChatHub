@@ -1,25 +1,43 @@
 # ChatHub 🤖
 
-A modern, dark-themed AI chat application with multi-model support, rich content rendering, and a sleek green-accented interface.
+A modern, feature-rich AI chat application with multi-model support, advanced settings, unified memory, and a sleek interface.
 
 ## ✨ Features
 
-### 🎨 Modern UI
-- **Dark futuristic theme** with gradient backgrounds
-- **Smooth animations** and enhanced micro-interactions
-- **Inter font** for clean, modern typography
-- **Unified green theme** for all model boxes
-- **Desktop-optimized** interface with refined spacing
-- **Status indicators** for model availability
-
 ### 🤖 Multi-Model Support
 - **GPT-OSS** ✅ Working (OpenRouter API)
-- **GEMMA-3** ✅ Working (HuggingFace API - Fixed!)
-- **LLAMA3.2** 🔴 Down (HuggingFace service issues)
+- **GEMMA-3** ✅ Working (HuggingFace API)
 - **LLAMA-3.1** ✅ Working (HuggingFace API)
 - **QWEN3.5** ✅ Working (HuggingFace API - Thinking Model)
 - **NEMOTRON-3-SUPER** ✅ Working (OpenRouter API)
 - **TRINITY-LARGE-PREVIEW** ✅ Working (OpenRouter API)
+- **DEEPSEEK-V3.2** ✅ Working (HuggingFace API) - **NEW IN v1.2!**
+
+### ⚙️ Advanced Settings Panel - **NEW IN v1.2!**
+- **Real-time Theme Switching**: Dark, Light, and Auto modes
+- **Font Size Control**: Small, Medium, Large options
+- **Compact Mode**: Reduced spacing for more content
+- **AI Configuration**: Max tokens, temperature, timeout controls
+- **Chat Preferences**: Auto-save, sound effects, timestamps
+- **Data Management**: Export formats and language settings
+- **Visual Feedback**: Instant UI changes with smooth animations
+
+### 🧠 Unified Chat Memory - **NEW IN v1.2!**
+- **Auto-save Conversations**: Every chat automatically saved
+- **Load Individual Chats**: Restore specific conversations
+- **Load All Feature**: Combine all conversations into one
+- **Export Memory**: Download as JSON, CSV, or TXT
+- **Import Memory**: Upload and merge chat history
+- **Smart Merging**: Automatic duplicate removal
+- **Enhanced Warning**: Clear memory with confirmation modal
+
+### 🎨 Modern UI
+- **Beautiful Settings Panel**: Modern card-based design with animations
+- **Theme System**: Dynamic CSS variables for instant theming
+- **Responsive Design**: Works on all screen sizes
+- **Smooth Animations**: Staggered animations and micro-interactions
+- **Visual Indicators**: Sound effects and theme change notifications
+- **Professional Typography**: Clean Inter font hierarchy
 
 ### 💬 Rich Content Support
 - **Syntax highlighting** for code blocks
@@ -33,9 +51,9 @@ A modern, dark-themed AI chat application with multi-model support, rich content
 - **Frontend**: React + Vite
 - **Backend**: Express.js
 - **AI Integration**: OpenRouter API + HuggingFace API
-- **Styling**: Custom CSS with CSS variables and Inter font
+- **Storage**: localStorage for persistent settings and memory
+- **Styling**: CSS variables and modern animations
 - **Markdown**: react-markdown with syntax highlighting
-- **Animations**: Enhanced CSS transitions and transforms
 
 ## 🚀 Getting Started
 
@@ -108,7 +126,47 @@ A modern, dark-themed AI chat application with multi-model support, rich content
 | QWEN3.5 | ✅ Working | HuggingFace | Thinking model |
 | NEMOTRON-3-SUPER | ✅ Working | OpenRouter | Advanced model |
 | TRINITY-LARGE-PREVIEW | ✅ Working | OpenRouter | Preview model |
+| DEEPSEEK-V3.2 | ✅ Working | HuggingFace | **NEW!** Advanced reasoning |
 | LLAMA3.2 | 🔴 Down | HuggingFace | Service issues |
+
+## 📋 v1.2 Changelog
+
+### ✨ New Features
+- **DEEPSEEK-V3.2 Integration**: Advanced reasoning AI model
+- **Advanced Settings Panel**: Complete UI overhaul with real-time changes
+- **Unified Chat Memory**: Auto-save, load, export/import functionality
+- **Theme System**: Dark, Light, and Auto modes with instant switching
+- **Font Size Control**: Small, Medium, Large options
+- **Compact Mode**: Reduced spacing for more content
+- **Sound Effects**: Audio notifications for AI responses
+- **Visual Indicators**: Theme change and sound notifications
+
+### 🔧 Improvements
+- **Modern Settings UI**: Card-based design with animations
+- **CSS Variables**: Dynamic theming system
+- **Enhanced Animations**: Staggered fade-ins and smooth transitions
+- **Better UX**: Clear descriptions and tooltips
+- **Responsive Design**: Mobile-friendly settings panel
+- **Smart Merging**: Duplicate removal in memory imports
+
+### 🐛 Fixes
+- **Settings Persistence**: Settings now properly save and load
+- **Font Size Application**: Font changes now affect entire UI
+- **Theme Switching**: Instant visual feedback for theme changes
+- **Memory Loading**: Fixed blank message bubbles issue
+- **API Integration**: Improved error handling and timeout management
+
+### 📱 Enhancements
+- **Professional Typography**: Improved font hierarchy
+- **Hover Effects**: Enhanced micro-interactions
+- **Loading States**: Better visual feedback
+- **Accessibility**: Improved focus states and labels
+
+---
+
+**ChatHub v1.2 - Your AI, Your Way!** ✨
+
+Visit: [chathubai.vercel.app](https://chathubai.vercel.app)
 
 ## 🎨 UI Features
 
