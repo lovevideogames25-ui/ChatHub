@@ -46,11 +46,13 @@ function App() {
     // Apply theme
     document.body.className = newSettings.theme;
     
-    // Apply font size
-    const fontSize = 
-      newSettings.fontSize === 'small' ? '14px' :
-      newSettings.fontSize === 'large' ? '18px' : '16px';
-    document.body.style.fontSize = fontSize;
+    // Apply font size class
+    document.body.classList.remove('small-font', 'large-font');
+    if (newSettings.fontSize === 'small') {
+      document.body.classList.add('small-font');
+    } else if (newSettings.fontSize === 'large') {
+      document.body.classList.add('large-font');
+    }
     
     // Apply compact mode
     if (newSettings.compactMode) {
@@ -59,28 +61,60 @@ function App() {
       document.body.classList.remove('compact-mode');
     }
     
-    // Apply theme-specific styles
+    // Apply theme-specific styles using CSS variables
+    const root = document.documentElement;
     if (newSettings.theme === 'light') {
       document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
       document.body.style.color = '#1e293b';
+      root.style.setProperty('--bg-primary', '#ffffff');
+      root.style.setProperty('--bg-secondary', '#f9fafb');
+      root.style.setProperty('--text-primary', '#1f2937');
+      root.style.setProperty('--text-secondary', '#6b7280');
+      root.style.setProperty('--border-color', '#e5e7eb');
     } else if (newSettings.theme === 'dark') {
       document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)';
       document.body.style.color = '#ffffff';
+      root.style.setProperty('--bg-primary', '#1a1a2e');
+      root.style.setProperty('--bg-secondary', '#16213e');
+      root.style.setProperty('--text-primary', '#ffffff');
+      root.style.setProperty('--text-secondary', '#a0a0a0');
+      root.style.setProperty('--border-color', '#374151');
     } else if (newSettings.theme === 'auto') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (prefersDark) {
         document.body.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)';
         document.body.style.color = '#ffffff';
+        root.style.setProperty('--bg-primary', '#1a1a2e');
+        root.style.setProperty('--bg-secondary', '#16213e');
+        root.style.setProperty('--text-primary', '#ffffff');
+        root.style.setProperty('--text-secondary', '#a0a0a0');
+        root.style.setProperty('--border-color', '#374151');
       } else {
         document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';
         document.body.style.color = '#1e293b';
+        root.style.setProperty('--bg-primary', '#ffffff');
+        root.style.setProperty('--bg-secondary', '#f9fafb');
+        root.style.setProperty('--text-primary', '#1f2937');
+        root.style.setProperty('--text-secondary', '#6b7280');
+        root.style.setProperty('--border-color', '#e5e7eb');
       }
+    }
+    
+    // Apply compact mode styles
+    if (newSettings.compactMode) {
+      root.style.setProperty('--spacing-small', '4px');
+      root.style.setProperty('--spacing-medium', '8px');
+      root.style.setProperty('--spacing-large', '12px');
+    } else {
+      root.style.setProperty('--spacing-small', '8px');
+      root.style.setProperty('--spacing-medium', '16px');
+      root.style.setProperty('--spacing-large', '24px');
     }
     
     // Show notification for theme change
     const indicator = document.createElement('div');
-    indicator.className = 'sound-indicator show';
-    indicator.textContent = `🎨 Theme: ${newSettings.theme.charAt(0).toUpperCase() + newSettings.theme.slice(1)}`;
+    indicator.className = 'theme-notification show';
+    indicator.textContent = `🎨 ${newSettings.theme.charAt(0).toUpperCase() + newSettings.theme.slice(1)} Theme Applied`;
     indicator.style.background = newSettings.theme === 'light' ? '#3b82f6' : '#6b7280';
     document.body.appendChild(indicator);
     

@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --border-color: #374151;
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+}
+
 .app {
   height: 100vh;
   width: 100vw;
@@ -12,7 +23,8 @@
   letter-spacing: -0.01em;
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  background: var(--bg-primary);
+  transition: all 0.3s ease;
 }
 
 * {
@@ -922,6 +934,104 @@ body.auto {
   body.auto .settings-header {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   }
+}
+
+/* Font Size Classes */
+body.small-font {
+  font-size: 14px;
+}
+
+body.small-font .app {
+  font-size: 14px;
+}
+
+body.small-font .label-text {
+  font-size: 13px;
+}
+
+body.small-font .label-description {
+  font-size: 11px;
+}
+
+body.small-font .section-header h4 {
+  font-size: 15px;
+}
+
+body.small-font .header-title h3 {
+  font-size: 18px;
+}
+
+body.small-font .font-btn {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
+body.small-font .theme-select,
+body.small-font .format-select,
+body.small-font .language-select {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+body.large-font {
+  font-size: 18px;
+}
+
+body.large-font .app {
+  font-size: 18px;
+}
+
+body.large-font .label-text {
+  font-size: 16px;
+}
+
+body.large-font .label-description {
+  font-size: 14px;
+}
+
+body.large-font .section-header h4 {
+  font-size: 18px;
+}
+
+body.large-font .header-title h3 {
+  font-size: 22px;
+}
+
+body.large-font .font-btn {
+  font-size: 13px;
+  padding: 7px 14px;
+}
+
+body.large-font .theme-select,
+body.large-font .format-select,
+body.large-font .language-select {
+  font-size: 14px;
+  padding: 10px 14px;
+}
+
+/* Default medium font */
+body {
+  font-size: 16px;
+}
+
+body .app {
+  font-size: 16px;
+}
+
+body .label-text {
+  font-size: 14px;
+}
+
+body .label-description {
+  font-size: 12px;
+}
+
+body .section-header h4 {
+  font-size: 16px;
+}
+
+body .header-title h3 {
+  font-size: 20px;
 }
 
 /* Compact Mode with Animations */
